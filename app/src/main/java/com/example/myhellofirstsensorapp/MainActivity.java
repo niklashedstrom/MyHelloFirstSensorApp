@@ -19,4 +19,9 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, compass.class);
         startActivity(intent);
     }
+
+    public void goToAccelerometer(View view) {
+        Intent intent = new Intent(this, Accelerometer.class);
+        startActivity(intent);
+    }
 }

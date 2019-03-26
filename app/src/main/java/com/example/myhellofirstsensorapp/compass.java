@@ -4,12 +4,14 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class compass extends AppCompatActivity implements SensorEventListener {
@@ -26,6 +28,7 @@ public class compass extends AppCompatActivity implements SensorEventListener {
     private float[] mLastMagnetometer = new float[3];
     private boolean mLastAccelerometerSet = false;
     private boolean mLastMagnetometerSet = false;
+    private RelativeLayout currentLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +38,10 @@ public class compass extends AppCompatActivity implements SensorEventListener {
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         compass_img = (ImageView) findViewById(R.id.img_compass);
         txt_compass = (TextView) findViewById(R.id.txt_azimuth);
+        currentLayout = (RelativeLayout) findViewById(R.id.hej);
+
+
+
 
         start();
     }
@@ -63,25 +70,43 @@ public class compass extends AppCompatActivity implements SensorEventListener {
         compass_img.setRotation(-mAzimuth);
 
         String where = "NW";
+        int c = Color.RED;
 
-        if (mAzimuth >= 350 || mAzimuth <= 10)
+
+        if (mAzimuth >= 350 || mAzimuth <= 10) {
             where = "N";
-        if (mAzimuth < 350 && mAzimuth > 280)
+            c = Color.BLUE;
+        }
+        if (mAzimuth < 350 && mAzimuth > 280){
             where = "NW";
-        if (mAzimuth <= 280 && mAzimuth > 260)
+            c = Color.GRAY;
+        }
+        if (mAzimuth <= 280 && mAzimuth > 260) {
             where = "W";
-        if (mAzimuth <= 260 && mAzimuth > 190)
+            c = Color.GREEN;
+        }
+        if (mAzimuth <= 260 && mAzimuth > 190) {
             where = "SW";
-        if (mAzimuth <= 190 && mAzimuth > 170)
+            c = Color.YELLOW;
+        }
+        if (mAzimuth <= 190 && mAzimuth > 170) {
             where = "S";
-        if (mAzimuth <= 170 && mAzimuth > 100)
+            c = Color.WHITE;
+        }
+        if (mAzimuth <= 170 && mAzimuth > 100) {
             where = "SE";
-        if (mAzimuth <= 100 && mAzimuth > 80)
+            c = Color.CYAN;
+        }
+        if (mAzimuth <= 100 && mAzimuth > 80) {
             where = "E";
-        if (mAzimuth <= 80 && mAzimuth > 10)
+            c = Color.MAGENTA;
+        }
+        if (mAzimuth <= 80 && mAzimuth > 10) {
             where = "NE";
+            c = Color.TRANSPARENT;
+        }
 
-
+        currentLayout.setBackgroundColor(c);
         txt_compass.setText(mAzimuth + "° " + where);
     }
 
