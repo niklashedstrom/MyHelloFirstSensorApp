@@ -8,8 +8,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.ImageView;
+import android.os.Vibrator;
 import android.widget.TextView;
 
 
@@ -34,20 +33,28 @@ public class Accelerometer extends AppCompatActivity implements SensorEventListe
         xValue = (TextView) findViewById(R.id.x_axis);
         yValue = (TextView) findViewById(R.id.y_axis);
         zValue = (TextView) findViewById(R.id.z_axis);
-        dir = (TextView) findViewById(R.id.dir);
+        dir =  findViewById(R.id.dir);
 
     }
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
-        // can be safely ignored for this demo
+
     }
 
+    public float convert(float a ){
+        float p = a*100;
+        float l = Math.round(p);
+        float h = l / 100;
+        return h;
+    }
     @Override
     public void onSensorChanged(SensorEvent event) {
+        Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
-        xValue.setText(Float.toString(Math.round(event.values[0])));
-        yValue.setText(Float.toString(Math.round(event.values[1])));
-        zValue.setText(Float.toString(Math.round(event.values[2])));
+
+        xValue.setText(Float.toString(convert(event.values[0])));
+        yValue.setText(Float.toString(convert(event.values[1])));
+        zValue.setText(Float.toString(convert(event.values[2])));
 
         if(event.values[0] <= -4.0){
             dir.setText("Höger");
@@ -61,10 +68,10 @@ public class Accelerometer extends AppCompatActivity implements SensorEventListe
             dir.setText("");
         }
 
-        /* if(event.values[1] >= 5.0){
-            dir.setText("tja");
+        if(event.values[0] <= -8.0 || event.values[0] >= 8.0){
+            v.vibrate(400);
+
         }
-        */
     }
 
 
